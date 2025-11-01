@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConfig {
-    private static final String URL = "jdbc:h2:~/testdb"; // pohranjeno u home direktoriju
+    private static final String URL = "jdbc:h2:~/testdb";
     private static final String USER = "sa";
     private static final String PASSWORD = "";
 
