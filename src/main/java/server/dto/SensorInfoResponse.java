@@ -4,9 +4,11 @@ import lombok.Data;
 
 
 @Data
-public class SensorInfoRequest {
+public class SensorInfoResponse {
+    private Long id;
     private double latitude;
     private double longitude;
     private String ip;
     private int port;
+
 }

@@ -1,5 +1,6 @@
     package server.controller;
 
+    import server.dto.SensorInfoResponse;
     import server.model.Sensor;
     import org.springframework.http.*;
     import org.springframework.web.bind.annotation.*;
@@ -39,16 +40,16 @@
         }
 
         @GetMapping
-        public ResponseEntity<List<Sensor>> getAllSensors() {
-            List<Sensor> allSensors = sensorService.getAllSensors();
+        public ResponseEntity<List<SensorInfoResponse>> getAllSensors() {
+            List<SensorInfoResponse> allSensors = sensorService.getAllSensors();
             return ResponseEntity.ok(allSensors);
         }
 
         @GetMapping("/{id}/nearest")
-        public ResponseEntity<Sensor> getNearestSensors(@PathVariable Long id) {
+        public ResponseEntity<SensorInfoResponse> getNearestSensors(@PathVariable Long id) {
             try {
                 logger.info("Getting nearest sensor for sensor with ID {}", id);
-                Sensor nearestSensor = sensorService.getNearest(id);
+                SensorInfoResponse nearestSensor = sensorService.getNearest(id);
                 if (nearestSensor == null) {
                     return ResponseEntity.noContent().build();
                 }

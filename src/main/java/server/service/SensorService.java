@@ -1,5 +1,6 @@
 package server.service;
 
+import server.dto.SensorInfoResponse;
 import server.model.Sensor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,12 +25,24 @@ public class SensorService {
     }
 
 
-    public List<Sensor> getAllSensors() {
-        return sensorRepository.findAll();
+    public List<SensorInfoResponse> getAllSensors() {
+        List<Sensor> sensors = sensorRepository.findAll();
+
+        return sensors.stream()
+                .map(sensor -> {
+                    SensorInfoResponse dto = new SensorInfoResponse();
+                    dto.setId(sensor.getId().longValue());
+                    dto.setLatitude(sensor.getLatitude());
+                    dto.setLongitude(sensor.getLongitude());
+                    dto.setIp(sensor.getIp());
+                    dto.setPort(sensor.getPort());
+                    return dto;
+                })
+                .toList();
     }
 
 
-    public Sensor getNearest(Long referenceSensorId) {
+    public SensorInfoResponse getNearest(Long referenceSensorId) {
         Sensor referenceSensor = sensorRepository.findById(referenceSensorId)
                 .orElseThrow(() -> new IllegalArgumentException("Sensor with ID " + referenceSensorId + " not found"));
 
@@ -54,7 +67,14 @@ public class SensorService {
             }
         }
 
-        return nearestSensor;
+        SensorInfoResponse dto = new SensorInfoResponse();
+        dto.setId(nearestSensor.getId().longValue());
+        dto.setLatitude(nearestSensor.getLatitude());
+        dto.setLongitude(nearestSensor.getLongitude());
+        dto.setIp(nearestSensor.getIp());
+        dto.setPort(nearestSensor.getPort());
+
+        return dto;
     }
 
     private double calculateDistanceInKm(double latitude1, double longitude1, double latitude2, double longitude2) {
